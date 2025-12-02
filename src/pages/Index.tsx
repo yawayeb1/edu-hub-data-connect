@@ -1,11 +1,10 @@
 import { Sidebar } from "@/components/Sidebar";
 import { WelcomeCard } from "@/components/WelcomeCard";
-import { StatCard } from "@/components/StatCard";
+import { DashboardStats } from "@/components/DashboardStats";
 import { RecentTransactions } from "@/components/RecentTransactions";
 import { AccountOverview } from "@/components/AccountOverview";
 import { SalesChart } from "@/components/SalesChart";
 import { MonthlySalesChart } from "@/components/MonthlySalesChart";
-import { Heart, ShoppingCart, Users, Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
@@ -28,39 +27,10 @@ const Index = () => {
 
             <TabsContent value="sales" className="space-y-6">
               {/* Welcome Card */}
-              <WelcomeCard userName="Nana Yaw" balance="5.6" />
+              <WelcomeCard />
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard
-                  title="Total Sales"
-                  value="GH¢44.4"
-                  icon={Heart}
-                  iconBgClass="bg-primary-light"
-                  iconColorClass="text-primary"
-                />
-                <StatCard
-                  title="Total Orders"
-                  value="2"
-                  icon={ShoppingCart}
-                  iconBgClass="bg-success-light"
-                  iconColorClass="text-success"
-                />
-                <StatCard
-                  title="Visitors"
-                  value="2"
-                  icon={Users}
-                  iconBgClass="bg-info-light"
-                  iconColorClass="text-info"
-                />
-                <StatCard
-                  title="Commission"
-                  value="GH¢0.067"
-                  icon={Wallet}
-                  iconBgClass="bg-destructive/10"
-                  iconColorClass="text-destructive"
-                />
-              </div>
+              <DashboardStats />
 
               {/* Charts Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

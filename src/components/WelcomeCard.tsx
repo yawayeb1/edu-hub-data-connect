@@ -1,26 +1,35 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface WelcomeCardProps {
-  userName: string;
-  balance: string;
+  userName?: string;
+  balance?: string;
 }
 
 export function WelcomeCard({ userName, balance }: WelcomeCardProps) {
+  const navigate = useNavigate();
+  const { profile, user } = useAuth();
+  
+  const displayName = userName || profile?.full_name || user?.email?.split('@')[0] || 'User';
+  const displayBalance = balance || profile?.balance?.toFixed(2) || '0.00';
+
   return (
     <Card className="relative overflow-hidden p-8 bg-gradient-to-br from-primary via-primary to-primary-dark shadow-card">
       <div className="relative z-10 space-y-4">
         <div>
           <h2 className="text-3xl font-bold text-primary-foreground mb-2">
-            Greetings, {userName}! 👋
+            Greetings, {displayName}! 👋
           </h2>
           <p className="text-lg text-primary-foreground/90">
             Your current balance is{" "}
-            <span className="font-bold text-xl">GH¢{balance}</span>
+            <span className="font-bold text-xl">GH¢{displayBalance}</span>
           </p>
         </div>
         <Button 
           size="lg"
+          onClick={() => navigate('/wallet')}
           className="bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary text-secondary-foreground font-semibold shadow-lg hover:shadow-xl transition-all"
         >
           Load Wallet

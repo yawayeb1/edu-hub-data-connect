@@ -3,13 +3,38 @@ import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Lock } from "lucide-react";
+import { BundleDropdown } from "@/components/BundleDropdown";
+import { useBundlePurchase } from "@/hooks/useBundlePurchase";
+import { useAuth } from "@/contexts/AuthContext";
+import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
+import { Lock, CreditCard, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ATiShare() {
+  const { profile, user } = useAuth();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedPackage, setSelectedPackage] = useState("");
-  const balance = "5.6";
+  const [selectedBundle, setSelectedBundle] = useState("");
+
+  const { handlePurchase, bundle, bundleLoading, isReady, bundlePrice } = useBundlePurchase({
+    bundleId: selectedBundle,
+    phoneNumber,
+    network: "AT_ISHARE",
+    onSuccess: (orderId) => {
+      setPhoneNumber("");
+      setSelectedBundle("");
+      toast.success(`Order ${orderId} created successfully!`);
+    },
+  });
+
+  // Determine button text based on what's missing
+  const getButtonText = () => {
+    if (bundleLoading) return "Loading...";
+    if (!user) return "Please Sign In";
+    if (!phoneNumber.trim()) return "Enter Phone Number";
+    if (!selectedBundle) return "Select Bundle";
+    if (!PAYSTACK_PUBLIC_KEY) return "Paystack Not Configured";
+    return "Pay with Paystack";
+  };
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -49,36 +74,67 @@ export default function ATiShare() {
                 <Label htmlFor="package" className="text-sm font-medium">
                   CHOOSE A MENU <span className="text-destructive">*</span>
                 </Label>
-                <Select value={selectedPackage} onValueChange={setSelectedPackage}>
-                  <SelectTrigger id="package" className="h-12">
-                    <SelectValue placeholder="Select package" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1gb-daily">1GB Daily - GH¢2.50</SelectItem>
-                    <SelectItem value="2gb-weekly">2GB Weekly - GH¢8.00</SelectItem>
-                    <SelectItem value="5gb-monthly">5GB Monthly - GH¢20.00</SelectItem>
-                    <SelectItem value="10gb-monthly">10GB Monthly - GH¢35.00</SelectItem>
-                    <SelectItem value="20gb-monthly">20GB Monthly - GH¢65.00</SelectItem>
-                  </SelectContent>
-                </Select>
+                <BundleDropdown
+                  network="AT_ISHARE"
+                  selectedBundle={selectedBundle}
+                  onValueChange={setSelectedBundle}
+                />
               </div>
+
+              {/* Bundle Price Display */}
+              {bundle && !bundleLoading && (
+                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-muted-foreground">Selected Bundle:</span>
+                    <span className="text-sm font-semibold">{bundle.display_name}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-muted-foreground">Amount to Pay:</span>
+                    <span className="text-xl font-bold text-primary">GH¢{bundle.price_ghc.toFixed(2)}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Balance Display */}
               <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 flex items-center justify-between">
                 <span className="text-sm font-medium text-muted-foreground">Available balance :</span>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
-                  <span className="text-lg font-bold text-foreground">GH¢{balance}</span>
+                  <div className={`w-2 h-2 rounded-full ${(profile?.balance || 0) >= bundlePrice ? 'bg-success' : 'bg-destructive'} animate-pulse`} />
+                  <span className="text-lg font-bold text-foreground">GH¢{profile?.balance?.toFixed(2) || '0.00'}</span>
                 </div>
               </div>
 
-              {/* Continue Button */}
+              {/* Pay Button */}
               <Button 
                 size="lg" 
-                className="w-full h-12 text-base font-medium bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                onClick={handlePurchase}
+                disabled={!isReady || bundleLoading}
+                className="w-full h-12 text-base font-medium bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Continue
+                {bundleLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <CreditCard className="h-4 w-4 mr-2" />
+                    {getButtonText()}
+                  </>
+                )}
               </Button>
+              
+              {/* Helpful Message */}
+              {!isReady && !bundleLoading && (
+                <div className="text-xs text-muted-foreground text-center mt-2">
+                  {!user && <p>Please sign in to make a purchase</p>}
+                  {user && !phoneNumber.trim() && <p>Enter a phone number to continue</p>}
+                  {user && phoneNumber.trim() && !selectedBundle && <p>Select a bundle to continue</p>}
+                  {user && phoneNumber.trim() && selectedBundle && !PAYSTACK_PUBLIC_KEY && (
+                    <p className="text-destructive">Paystack is not configured. Please add VITE_PAYSTACK_PUBLIC_KEY to your .env file.</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 

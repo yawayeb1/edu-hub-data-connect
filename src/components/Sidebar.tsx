@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { 
   Home, 
@@ -8,10 +9,14 @@ import {
   ChevronRight,
   Menu,
   X,
-  GraduationCap
+  GraduationCap,
+  LogOut,
+  Receipt
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const menuItems = [
   {
@@ -29,17 +34,32 @@ const menuItems = [
     ],
   },
   {
-    title: "Credits & Debits",
+    title: "Wallet",
     icon: Wallet,
-    subItems: [
-      { title: "Wallet", url: "/wallet" },
-    ],
+    url: "/wallet",
+  },
+  {
+    title: "Transactions",
+    icon: Receipt,
+    url: "/transactions",
   },
 ];
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>(["Services"]);
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success('Signed out successfully');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Failed to sign out');
+    }
+  };
 
   const toggleExpanded = (title: string) => {
     setExpandedItems((prev) =>
@@ -140,6 +160,18 @@ export function Sidebar() {
               ))}
             </ul>
           </nav>
+
+          {/* Sign Out Button */}
+          <div className="p-4 border-t border-sidebar-border">
+            <Button
+              variant="ghost"
+              onClick={handleSignOut}
+              className="w-full justify-start text-muted-foreground hover:text-destructive"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
 
           {/* Footer */}
           <div className="p-4 border-t border-sidebar-border">
