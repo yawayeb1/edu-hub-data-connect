@@ -1,5 +1,7 @@
-// Email API endpoint (backend server)
-const EMAIL_API_URL = import.meta.env.VITE_EMAIL_API_URL || 'http://localhost:3001';
+// Email API endpoint (Netlify Functions)
+// In production, this will be /.netlify/functions/send-email
+// In development with Netlify Dev, it's also /.netlify/functions/send-email
+const EMAIL_API_URL = import.meta.env.VITE_EMAIL_API_URL || '/.netlify/functions/send-email';
 
 export interface WelcomeEmailData {
   fullName: string;
@@ -30,12 +32,13 @@ export interface WalletTopUpEmailData {
  */
 export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean> {
   try {
-    const response = await fetch(`${EMAIL_API_URL}/api/email/welcome`, {
+    const response = await fetch(EMAIL_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        type: 'welcome',
         fullName: data.fullName,
         email: data.email,
       }),
@@ -60,12 +63,13 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean>
  */
 export async function sendBundlePurchaseEmail(data: BundlePurchaseEmailData): Promise<boolean> {
   try {
-    const response = await fetch(`${EMAIL_API_URL}/api/email/bundle-purchase`, {
+    const response = await fetch(EMAIL_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        type: 'bundle-purchase',
         fullName: data.fullName,
         email: data.email,
         orderId: data.orderId,
@@ -96,12 +100,13 @@ export async function sendBundlePurchaseEmail(data: BundlePurchaseEmailData): Pr
  */
 export async function sendWalletTopUpEmail(data: WalletTopUpEmailData): Promise<boolean> {
   try {
-    const response = await fetch(`${EMAIL_API_URL}/api/email/wallet-topup`, {
+    const response = await fetch(EMAIL_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        type: 'wallet-topup',
         fullName: data.fullName,
         email: data.email,
         amount: data.amount,
