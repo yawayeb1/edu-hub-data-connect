@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-// Email API endpoint (backend server)
-const EMAIL_API_URL = import.meta.env.VITE_EMAIL_API_URL || 'http://localhost:3001';
-=======
 // Email API endpoint (Netlify Functions)
 // In production, this will be /.netlify/functions/send-email
 // In development with Netlify Dev, it's also /.netlify/functions/send-email
 const EMAIL_API_URL = import.meta.env.VITE_EMAIL_API_URL || '/.netlify/functions/send-email';
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
 
 export interface WelcomeEmailData {
   fullName: string;
@@ -37,20 +32,13 @@ export interface WalletTopUpEmailData {
  */
 export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean> {
   try {
-<<<<<<< HEAD
-    const response = await fetch(`${EMAIL_API_URL}/api/email/welcome`, {
-=======
     const response = await fetch(EMAIL_API_URL, {
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-=======
         type: 'welcome',
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
         fullName: data.fullName,
         email: data.email,
       }),
@@ -75,20 +63,13 @@ export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<boolean>
  */
 export async function sendBundlePurchaseEmail(data: BundlePurchaseEmailData): Promise<boolean> {
   try {
-<<<<<<< HEAD
-    const response = await fetch(`${EMAIL_API_URL}/api/email/bundle-purchase`, {
-=======
     const response = await fetch(EMAIL_API_URL, {
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-=======
         type: 'bundle-purchase',
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
         fullName: data.fullName,
         email: data.email,
         orderId: data.orderId,
@@ -119,20 +100,13 @@ export async function sendBundlePurchaseEmail(data: BundlePurchaseEmailData): Pr
  */
 export async function sendWalletTopUpEmail(data: WalletTopUpEmailData): Promise<boolean> {
   try {
-<<<<<<< HEAD
-    const response = await fetch(`${EMAIL_API_URL}/api/email/wallet-topup`, {
-=======
     const response = await fetch(EMAIL_API_URL, {
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-=======
         type: 'wallet-topup',
->>>>>>> e213daa1b7e8a8e58369b4e2ff7b60763c6d39c3
         fullName: data.fullName,
         email: data.email,
         amount: data.amount,
