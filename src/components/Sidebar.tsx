@@ -27,6 +27,7 @@ const menuItems = [
   {
     title: "Services",
     icon: Wifi,
+    url: "/services",
     subItems: [
       { title: "AT iShare Business", url: "/services/at-ishare" },
       { title: "MTN UP2U Business", url: "/services/mtn-up2u" },

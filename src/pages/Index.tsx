@@ -1,4 +1,3 @@
-import { Sidebar } from "@/components/Sidebar";
 import { WelcomeCard } from "@/components/WelcomeCard";
 import { DashboardStats } from "@/components/DashboardStats";
 import { RecentTransactions } from "@/components/RecentTransactions";
@@ -9,10 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      
-      <main className="flex-1 lg:ml-0">
+    <main className="min-h-screen bg-background">
         <div className="p-6 lg:p-8 max-w-7xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
@@ -93,8 +89,7 @@ const Index = () => {
           </Tabs>
         </div>
       </main>
-    </div>
-  );
-};
-
-export default Index;
+    );
+  };
+  
+  export default Index;

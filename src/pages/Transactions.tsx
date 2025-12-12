@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
-import { Sidebar } from '@/components/Sidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -134,24 +133,19 @@ export default function Transactions() {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen bg-background">
-        <Sidebar />
-        <main className="flex-1 p-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Transactions</CardTitle>
-              <CardDescription>Please sign in to view transactions</CardDescription>
-            </CardHeader>
-          </Card>
-        </main>
-      </div>
+      <main className="p-6 min-h-screen bg-background">
+        <Card>
+          <CardHeader>
+            <CardTitle>Transactions</CardTitle>
+            <CardDescription>Please sign in to view transactions</CardDescription>
+          </CardHeader>
+        </Card>
+      </main>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1 p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <main className="p-6 lg:p-8 max-w-7xl mx-auto w-full min-h-screen bg-background">
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
             <Receipt className="h-8 w-8 text-primary" />
@@ -432,7 +426,6 @@ export default function Transactions() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
-  );
-}
+    );
+  }
 

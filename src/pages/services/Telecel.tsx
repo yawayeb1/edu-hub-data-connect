@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,11 +34,9 @@ export default function Telecel() {
   });
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1">
-        {/* Header Banner - Telecel Red Branding */}
-        <div className="bg-gradient-to-r from-red-900 to-red-700 text-white px-6 py-16 md:py-24">
+    <main className="min-h-screen bg-background">
+      {/* Header Banner - Telecel Red Branding */}
+      <div className="bg-gradient-to-r from-red-900 to-red-700 text-white px-6 py-16 md:py-24">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-4">TELECEL BUNDLE</h1>
             <p className="text-lg md:text-xl text-red-100 max-w-3xl mx-auto">
@@ -143,6 +140,5 @@ export default function Telecel() {
           </div>
         </div>
       </main>
-    </div>
-  );
-}
+    );
+  }

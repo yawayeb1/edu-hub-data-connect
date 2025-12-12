@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,11 +36,9 @@ export default function ATiShare() {
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1">
-        {/* Header Banner */}
-        <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white px-6 py-16 md:py-24">
+    <main className="min-h-screen bg-background">
+      {/* Header Banner */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white px-6 py-16 md:py-24">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-4">AT ISHARE BUNDLE</h1>
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
@@ -145,6 +142,5 @@ export default function ATiShare() {
           </div>
         </div>
       </main>
-    </div>
-  );
-}
+    );
+  }

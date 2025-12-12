@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Sidebar } from "@/components/Sidebar";
 import { WalletTopUp } from "@/components/WalletTopUp";
 import { WalletTransactions } from "@/components/WalletTransactions";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,9 +29,7 @@ export default function Wallet() {
   }, [success, searchParams, setSearchParams, refreshProfile]);
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1 p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <main className="min-h-screen bg-background p-6 lg:p-8 max-w-7xl mx-auto w-full">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Wallet</h1>
           <p className="text-muted-foreground">Manage your wallet balance and transactions</p>
@@ -78,6 +75,5 @@ export default function Wallet() {
           </div>
         </div>
       </main>
-    </div>
-  );
-}
+    );
+  }
